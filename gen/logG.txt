@@ -1,0 +1,2 @@
+sdG node_g1cxve5pg5 credits 72 state succeeded
+  -> gen/sdG.mp4 e9a2cbdc-c20b-4dc8-a36b-2c4f26b8acfa

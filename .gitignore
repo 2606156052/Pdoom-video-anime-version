@@ -14,7 +14,10 @@ out/*.png
 qa/still_*.png
 qa/*.wav
 gen/*.mp4
+gen/*.png
+gen/*.err
 song_mono.f32
+
 
 
 
