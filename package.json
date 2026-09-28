@@ -1,0 +1,33 @@
+{
+  "name": "pdoom-video-anime-version",
+  "version": "1.0.0",
+  "description": "P(doom)を上げてく: Anime OP remake of 'I'm Upping My P(doom)' (Neon Genesis Singularity) built with Claude & WebGL riso-cel shaders",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs",
+    "serve": "node server.mjs",
+    "render:stills": "node render.mjs --stills=1.5,23.5,45.0,95.5,123.5",
+    "render:frames": "node render.mjs --range=0:156.7 --workers=4",
+    "encode": "./encode.sh",
+    "analyze": "node analyze.mjs"
+  },
+  "keywords": [
+    "pdoom",
+    "anime",
+    "music-video",
+    "claude",
+    "webgl",
+    "shaders",
+    "rotoscope",
+    "evangelion"
+  ],
+  "author": "Anthropic Claude & Hongyi Fan (based on PDoomVideo by John Heibel)",
+  "license": "ISC",
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "ffprobe-static": "^3.1.0",
+    "puppeteer-core": "^25.12.0"
+  }
+}
+

@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>P(doom) studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Dela+Gothic+One&family=JetBrains+Mono:wght@500;800&family=Shippori+Mincho+B1:wght@800&family=Noto+Sans+JP:wght@900&display=block" rel="stylesheet">
+<style>html,body{margin:0;background:#111;overflow:hidden} #out{width:100vw;height:56.25vw;display:block} #hud{position:fixed;left:8px;bottom:8px;color:#fff;font:12px monospace}</style>
+</head><body>
+<canvas id="out"></canvas><div id="hud"></div>
+<script src="core.js"></script>
+<script src="gl.js"></script>
+<script src="fx.js"></script>
+<script src="type.js"></script>
+<script src="scenes_a.js"></script>
+<script src="scenes_b.js"></script>
+<script src="scenes_c.js"></script>
+<script src="timeline.js"></script>
+<script>
+const comp = document.createElement('canvas'); comp.width = W; comp.height = H;
+const cx = comp.getContext('2d');
+window.ready = (async () => {
+  const txt = 'P(doom)をあげてく I\'M UPPING 0123456789 第壱話 逃げちゃダメだ 特異点 君の瞳に火花 ✻';
+  await Promise.all(['Anton', 'Archivo Black', 'Dela Gothic One', '800 20px "JetBrains Mono"', '800 20px "Shippori Mincho B1"', '900 20px "Noto Sans JP"'].map(f => document.fonts.load(f.includes('px') ? f : `20px "${f}"`, txt)));
+  await document.fonts.ready;
+  try { Object.assign(SHOTS, await (await fetch('frames/index.json')).json()); } catch (e) {}
+  return true;
+})();
+window.renderFrame = async (t, fmt) => {
+  await window.ready;
+  cx.setTransform(1, 0, 0, 1, 0, 0); cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over'; cx.filter = 'none';
+  const pressOpts = await drawTimeline(cx, t) || {};
+  GLX.press(comp, t, pressOpts);
+  if (fmt) return document.getElementById('out').toDataURL(fmt, 0.93);
+};
+// interactive: ?t=12.3 shows a frame; ?play plays with audio from ?from=
+const qs = new URLSearchParams(location.search);
+if (qs.has('t')) window.renderFrame(parseFloat(qs.get('t'))).then(() => document.getElementById('hud').textContent = 't=' + qs.get('t'));
+if (qs.has('play')) {
+  const a = new Audio('song.mp3'); a.currentTime = parseFloat(qs.get('from') || 0);
+  document.body.onclick = () => { a.play(); (async function loop() { await window.renderFrame(a.currentTime); document.getElementById('hud').textContent = a.currentTime.toFixed(2); requestAnimationFrame(loop); })(); };
+}
+</script></body></html>
